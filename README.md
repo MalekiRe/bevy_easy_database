@@ -109,7 +109,7 @@ The plugin automatically loads persisted components when your app starts. This m
 ## Technical Details
 
 - Components must implement `Serialize` and `Deserialize` from serde
-- Entity IDs are preserved between sessions
+- Entity IDs are mapped between sessions
 - Changes are persisted immediately by default
 - The database uses fjall for reliable storage
 
