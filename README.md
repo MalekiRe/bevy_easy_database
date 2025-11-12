@@ -16,8 +16,8 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-bevy_database = "0.1.1"
-bevy = "0.15.2"
+bevy_database = "0.3.0"
+bevy = "0.17.2"
 ```
 
 ## Quick Start
