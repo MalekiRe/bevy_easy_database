@@ -147,6 +147,14 @@ fn draw_gizmos(mut gizmos: Gizmos, transforms: Query<&Transform, Without<Camera>
 }
 ```
 
+## Bevy support table
+
+| bevy | bevy_easy_database |
+|------|--------------------|
+| 0.17 | 0.3                |
+| 0.16 | 0.2                |
+| 0.15 | 0.1                |
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
