@@ -16,15 +16,15 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-bevy_database = "0.1.1"
-bevy = "0.15.2"
+bevy_database = "0.3.0"
+bevy = { version = "0.17.2", features = ["serialize"] }
 ```
 
 ## Quick Start
 
 ```rust
 use bevy::prelude::*;
-use bevy_database::{DatabasePlugin, DatabaseIgnore};
+use bevy_easy_database::{AddDatabaseMapping, DatabasePlugin, DatabaseIgnore};
 
 fn main() {
     App::new()
@@ -78,7 +78,7 @@ Some entities (like cameras or temporary effects) shouldn't be persisted. Add th
 ```rust
 fn setup(mut commands: Commands) {
     // This camera won't be persisted
-    commands.spawn((Camera2dBundle::default(), DatabaseIgnore));
+    commands.spawn((Camera2d, DatabaseIgnore));
     
     // This entity will be persisted
     commands.spawn(Transform::default());
@@ -118,8 +118,8 @@ The plugin automatically loads persisted components when your app starts. This m
 Here's a complete example showing how to create a simple game with persistent entity positions:
 
 ```rust
-use bevy::prelude::*;
-use bevy_database::{DatabasePlugin, DatabaseIgnore};
+use bevy::{color::palettes::css::RED, prelude::*};
+use bevy_easy_database::{AddDatabaseMapping, DatabaseIgnore, DatabasePlugin};
 
 fn main() {
     App::new()
@@ -133,7 +133,7 @@ fn main() {
 
 fn setup(mut commands: Commands) {
     // Camera won't be persisted
-    commands.spawn((Camera2dBundle::default(), DatabaseIgnore));
+    commands.spawn((Camera2d, DatabaseIgnore));
     
     // These entities will be persisted
     commands.spawn(Transform::from_xyz(0.0, 0.0, 0.0));
@@ -142,10 +142,18 @@ fn setup(mut commands: Commands) {
 
 fn draw_gizmos(mut gizmos: Gizmos, transforms: Query<&Transform, Without<Camera>>) {
     for transform in transforms.iter() {
-        gizmos.sphere(transform.translation, 5.0, Color::RED);
+        gizmos.sphere(transform.translation, 5.0, RED);
     }
 }
 ```
+
+## Bevy support table
+
+| bevy | bevy_easy_database |
+|------|--------------------|
+| 0.17 | 0.3                |
+| 0.16 | 0.2                |
+| 0.15 | 0.1                |
 
 ## Contributing
 

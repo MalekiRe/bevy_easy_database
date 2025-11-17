@@ -148,19 +148,20 @@ fn load_components<T: Serialize + for<'de> Deserialize<'de> + Component>(
         for (i, byte) in key.as_ref().iter().enumerate() {
             bytes[i] = *byte;
         }
-        let database_entity = Entity::from_raw(u32::from_be_bytes(bytes));
+        
+        if let Some(database_entity) = Entity::from_raw_u32(u32::from_be_bytes(bytes)) {
+            // Deserialize and insert component
+            let component =
+                bincode::deserialize::<T>(value.as_ref()).expect("Failed to deserialize component");
 
-        // Deserialize and insert component
-        let component =
-            bincode::deserialize::<T>(value.as_ref()).expect("Failed to deserialize component");
-
-        match database_load_mapper.0.get(&database_entity).cloned() {
-            None => {
-                let entity = commands.spawn((component, DatabaseJustUpdated));
-                database_load_mapper.insert(database_entity, entity.id());
-            }
-            Some(entity) => {
-                commands.entity(entity).insert((component, DatabaseJustUpdated));
+            match database_load_mapper.0.get(&database_entity).cloned() {
+                None => {
+                    let entity = commands.spawn((component, DatabaseJustUpdated));
+                    database_load_mapper.insert(database_entity, entity.id());
+                }
+                Some(entity) => {
+                    commands.entity(entity).insert((component, DatabaseJustUpdated));
+                }
             }
         }
     }
